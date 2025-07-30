@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.hibernate.type.ListType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,17 +34,25 @@ public class UserController {
         return "hello";
     }
 
-    @RequestMapping("/admin/user")
-    public String getUserPage(Model model) {
+    @RequestMapping("/admin/user/create")
+    public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
-    @RequestMapping(value = "/admin/user/create1", method = RequestMethod.POST)
+    @RequestMapping("/admin/user")
+    public String getUserpage(Model model) {
+        List<User> users = this.userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "admin/user/table-user";
+    }
+
+
+    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
     public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
         System.out.println("run here " + hoidanit);
         this.userService.handlSaveUser(hoidanit);
-        return "hello";
+        return "redirect:/admin/user";
     }
 
 }
