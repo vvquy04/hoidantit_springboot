@@ -6,6 +6,7 @@ import org.hibernate.type.ListType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,9 @@ import org.springframework.ui.Model;
 import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class UserController {
@@ -47,6 +51,15 @@ public class UserController {
         return "admin/user/table-user";
     }
 
+    @RequestMapping("/admin/user/{id}")
+    public String getUserDetailPage(Model model, @PathVariable long id) {
+        User user = this.userService.getUserById(id);
+        model.addAttribute("id", id);
+        model.addAttribute("user", user);
+        return "admin/user/show";
+    }
+    
+
 
     @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
     public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
@@ -54,5 +67,25 @@ public class UserController {
         this.userService.handlSaveUser(hoidanit);
         return "redirect:/admin/user";
     }
+
+    @RequestMapping("/admin/user/update/{id}")
+    public String getUpdateUserPage(Model model, @PathVariable long id) {
+        User user = this.userService.getUserById(id);
+        model.addAttribute("newUser", user);
+        return "admin/user/update";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String updateUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
+        User user = this.userService.getUserById(hoidanit.getId());
+        if(user != null) {
+            user.setAddress(hoidanit.getAddress());
+            user.setFullname(hoidanit.getFullname());
+            user.setPhone(hoidanit.getPhone());
+            this.userService.handlSaveUser(user);
+        }
+        return "redirect:/admin/user";
+    }
+    
 
 }
