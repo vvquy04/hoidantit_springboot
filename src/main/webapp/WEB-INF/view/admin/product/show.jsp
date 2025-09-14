@@ -28,16 +28,17 @@
             <div class="row">
                 <div class="col-12 mx-auto">
                     <div class="d-flex m-2 justify-content-between">
-                        <h3>Table User</h3>
-                        <a href="/admin/user/create" class="btn btn-primary">Create a user</a>
+                        <h3>Table products</h3>
+                        <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
                     </div>
                     <hr/>
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Full Name</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Factory</th>
                             <th colspan="3">Action</th>
                             </tr>
                         </thead>
