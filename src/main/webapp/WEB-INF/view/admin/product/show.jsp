@@ -43,15 +43,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="user" items="${users}"> 
+                            <c:forEach var="product" items="${products}"> 
                             <tr> 
-                            <td>${user.id}</td> 
-                            <td style="text-align: center">${user.email}</td> 
-                            <td style="text-align: center">${user.fullname}</td> 
+                            <td>${product.id}</td> 
+                            <td style="text-align: center">${product.name}</td> 
+                            <td style="text-align: center">${product.price}</td>
+                             <td style="text-align: center">${product.factory}</td>
                             <td>
-                                <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
-                                <a href="/admin/user/update/${user.id}" class="btn btn-warning mx-2">Update</a>
-                                <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
+                                <a href="/admin/product/${product.id}" class="btn btn-success">View</a>
+                                <a href="/admin/product/update/${product.id}" class="btn btn-warning mx-2">Update</a>
+                                <a href="/admin/product/delete/${product.id}" class="btn btn-danger">Delete</a>
                             </td>
                             </tr>
                             </c:forEach>

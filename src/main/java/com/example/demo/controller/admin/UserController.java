@@ -22,16 +22,18 @@ import com.example.demo.service.UploadService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletContext;
-
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @Controller
 public class UserController {
-    private final UserService userService; 
+    private final UserService userService;
     private final UploadService uploadService;
-    private PasswordEncoder passwordEncoder; 
+    private PasswordEncoder passwordEncoder;
+
     public UserController(UserService userService, UploadService uploadService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
@@ -68,17 +70,24 @@ public class UserController {
         model.addAttribute("user", user);
         return "admin/user/detail";
     }
-    
-
 
     @PostMapping(value = "/admin/user/create")
-    public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit, @RequestParam("hoidanitFile") MultipartFile file ) {
+    public String createUserPage(Model model, @ModelAttribute("newUser") @Valid User hoidanit,
+            BindingResult bindingResult,
+            @RequestParam("hoidanitFile") MultipartFile file) {
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(error.getField() + " - " + error.getDefaultMessage());
+        }
+        if(bindingResult.hasErrors()){
+            return "/admin/user/create";
+        }
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
         hoidanit.setAvatar(avatar);
         hoidanit.setPassword(hashPassword);
         hoidanit.setRole(this.userService.getRoleByName(hoidanit.getRole().getName()));
-       this.userService.handlSaveUser(hoidanit);
+        this.userService.handlSaveUser(hoidanit);
         return "redirect:/admin/user";
     }
 
@@ -92,7 +101,7 @@ public class UserController {
     @PostMapping("/admin/user/update")
     public String updateUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
         User user = this.userService.getUserById(hoidanit.getId());
-        if(user != null) {
+        if (user != null) {
             user.setAddress(hoidanit.getAddress());
             user.setFullname(hoidanit.getFullname());
             user.setPhone(hoidanit.getPhone());
@@ -109,7 +118,7 @@ public class UserController {
         model.addAttribute("newUser", new User());
         return "admin/user/delete";
     }
-    
+
     @PostMapping("/admin/user/delete/{id}")
     public String postDeleteUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
         this.userService.deleteAUser(hoidanit.getId());

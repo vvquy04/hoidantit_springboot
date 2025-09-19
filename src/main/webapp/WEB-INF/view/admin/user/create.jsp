@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -48,14 +49,22 @@ src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                         enctype="multipart/form-data" >
                         <div class="row g-3">
   <div class="col mb-3">
+     <c:set var="errorEmail"> 
+<form:errors path="email" cssClass="invalid-feedback"/>         
+</c:set> 
                             <label class="form-label">Email:</label>
-                            <form:input type="email" class="form-control"
+                            <form:input type="email" class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
                                 path="email" />
+                                ${errorEmail}
                         </div>
                         <div class="col mb-3">
+                            <c:set var="errorPassword"> 
+<form:errors path="password" cssClass="invalid-feedback"/>         
+</c:set> 
                             <label class="form-label">Password:</label>
-                            <form:input type="password" class="form-control"
+                            <form:input type="password" class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
                                 path="password" />
+                                ${errorPassword}
                         </div>
 </div>
 <div class="row g-3">
@@ -65,9 +74,13 @@ src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                                 path="phone" />
                         </div>
                         <div class="col mb-3">
+                            <c:set var="errorFullname"> 
+<form:errors path="fullname" cssClass="invalid-feedback"/>         
+</c:set> 
                             <label class="form-label">Full name:</label>
-                            <form:input type="text" class="form-control"
+                            <form:input type="text" class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
                                 path="fullname" />
+                            ${errorFullname}
                         </div>
 </div>
                         
