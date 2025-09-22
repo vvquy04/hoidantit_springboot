@@ -43,8 +43,6 @@ public class UserController {
     @RequestMapping("/")
     public String getHomePage(Model model) {
         String test = this.userService.HandleHello();
-        List<User> arrUsers = this.userService.getAllUsersByEmail("5@gmail.com");
-        System.out.println(arrUsers);
         model.addAttribute("eric", test);
         model.addAttribute("hoidanit", "chào cưng");
         return "hello";

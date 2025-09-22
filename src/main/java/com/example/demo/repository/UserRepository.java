@@ -11,8 +11,10 @@ import com.example.demo.domain.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     User save(User hoidanit);
 
-    List<User> findByEmail(String email);
     User findById(long id);
     
     void deleteById(long id);
+    boolean existsByEmail(String email);
+
+    User findByEmail(String email);
 }
